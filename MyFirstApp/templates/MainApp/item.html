@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %} {{items.title}} {% endblock title %}
+
+{% block content %}
+
+<h2>{{items.title}}</h2>
+
+<p> {{items.description}} </p>
+
+<em>{{items.pub_date}}</em>
+
+{% comment %} {% if items.recently_published %}
+   Свежий товар!
+{% else %}
+   Хуита
+{% endif %} {% endcomment %}
+
+<hr>
+
+   {% if comments_list %}
+
+   {% for comment in comments_list %}
+
+      <p>
+         <strong>{{comment.author_name}}</strong>
+         <p>{{comment.text}}</p>
+      </p>
+
+   {% endfor %}
+
+   {% else %}
+
+   Комментариев еще нет
+
+   {% endif %}
+
+</hr>
+
+<form action ="{% url 'main:leave_comment' items.id %}" method="POST">
+
+   {% csrf_token %}
+
+   <input type="text" required placeholder="Ваше имя" name = "name"><br>
+   <textarea name = "text" required placeholder="Текст комментария" cols="30" rows="10"></textarea><br>
+   <button type="submit">Отправить комментарий</button>
+
+<a href = "/main"><p> Вернуться на главную с товарами </p></a>
+
+</form>
+
+{% endblock content %}
